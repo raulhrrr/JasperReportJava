@@ -1,0 +1,59 @@
+service: java-jasperreport
+
+frameworkVersion: "3.19.0"
+
+provider:
+  name: aws
+  endpointType: REGIONAL
+  runtime: java11
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: us-east-1
+  deploymentBucket:
+    name: jrxml-templates-jasperreport
+  apiGateway:
+    binaryMediaTypes:
+      - "*/*"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - "s3:*"
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - "secretsmanager:*"
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - "rds:*"
+          Resource: "*"
+
+package:
+  artifact: target/btgfx-1.0.jar
+
+functions:
+  LambdaJasperReport:
+    handler: btg.reporteria.LambdaFunctionHandler
+    name: LambdaJasperReport
+    memorySize: 512
+    timeout: 60
+    environment:
+      RDS_DB_DRIVER: "org.mariadb.jdbc.Driver"
+      BUCKET_NAME: "jrxml-templates-jasperreport"
+      SECRET_NAME: "secret-jasperdb"
+      SECRET_REGION: "us-east-1"
+    vpc:
+      securityGroupIds:
+        - sg-0c190caed6a0eb5b3
+      subnetIds:
+        - subnet-0b852143b786bcdf3
+    events:
+      - http:
+          path: /reports
+          method: get
+          request:
+            parameters:
+              querystrings:
+                ordeCodigo: true
