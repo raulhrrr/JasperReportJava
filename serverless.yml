@@ -30,6 +30,17 @@ provider:
             - "rds:*"
           Resource: "*"
 
+custom:
+  DB_NAME: ExampleDB
+  USERNAME: master
+  PASSWORD: password
+  MYSQL:
+    HOST:
+      Fn::GetAtt: [MySqlRDSInstance, Endpoint.Address]
+    PORT:
+      Fn::GetAtt: [MySqlRDSInstance, Endpoint.Port]
+    VPC_CIDR: 10
+
 package:
   artifact: target/btgfx-1.0.jar
 
@@ -46,9 +57,9 @@ functions:
       SECRET_REGION: "us-east-1"
     vpc:
       securityGroupIds:
-        - sg-0f667aa80ec99760c
+        - Ref: ServerlessSecurityGroup
       subnetIds:
-        - subnet-06c9ddf34c05970cc
+        - Ref: ServerlessSubnetA
     events:
       - http:
           path: /reports
@@ -57,3 +68,19 @@ functions:
             parameters:
               querystrings:
                 ordeCodigo: true
+
+resources:
+  Resources:
+    ServerlessInternetGateway: ${file(./resource/ServerlessInternetGateway.yml)}
+    ServerlessVPC: ${file(./resource/ServerlessVPC.yml)}
+    ServerlessVPCGA: ${file(./resource/ServerlessVPCGA.yml)}
+    ServerlessSubnetA: ${file(./resource/ServerlessSubnetA.yml)}
+    ServerlessSubnetB: ${file(./resource/ServerlessSubnetB.yml)}
+    ServerlessSubnetGroup: ${file(./resource/ServerlessSubnetGroup.yml)}
+    ServerlessSecurityGroup: ${file(./resource/ServerlessSecurityGroup.yml)}
+    RouteTablePublic: ${file(./resource/RouteTablePublic.yml)}
+    RoutePublic: ${file(./resource/RoutePublic.yml)}
+    RouteTableAssociationSubnetA: ${file(./resource/RouteTableAssociationSubnetA.yml)}
+    RouteTableAssociationSubnetB: ${file(./resource/RouteTableAssociationSubnetB.yml)}
+
+    MySqlRDSInstance: ${file(./resource/MySqlRDSInstance.yml)}
