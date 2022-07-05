@@ -48,7 +48,7 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
             InputStream template = null;
 
             switch (ordeCodigo) {
-                case "267675":
+                case "1":
                     logo = s3Client.retrieveObjectFromS3("logos/logo-banco.png");
                     template = s3Client.retrieveObjectFromS3("templates/comprobante.jrxml");
                     break;
