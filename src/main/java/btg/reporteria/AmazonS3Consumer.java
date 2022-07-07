@@ -1,6 +1,8 @@
 package btg.reporteria;
 
+import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Paths;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;
@@ -9,8 +11,6 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.S3Object;
-import java.io.File;
-import java.nio.file.Paths;
 
 public class AmazonS3Consumer {
 

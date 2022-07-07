@@ -1,8 +1,5 @@
 package btg.reporteria;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,13 +8,16 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.sql.Connection;
-import java.sql.ResultSet;
-
-import net.sf.jasperreports.engine.JRException;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
+import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
+
+import net.sf.jasperreports.engine.JRException;
 
 public class LambdaFunctionHandler implements RequestStreamHandler {
 
@@ -31,43 +31,45 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
         try {
 
             JSONObject queryParameters = extractQueryStringParameters(inputStream);
-            String ordeCodigo = (String) queryParameters.get((Object) "ordeCodigo");
-
-            // dependes on SECRET_NAME, SECRET_REGION
+            String codigoReporte = (String) queryParameters.get((Object) "codigoReporte");
+            String tipoReporte = (String) queryParameters.get((Object) "tipoReporte");
+            
+            // depends on SECRET_NAME, SECRET_REGION
             DatabaseCredentials credentials = new DatabaseCredentials(this.logger);
             credentials.buildCredentials();
 
             // depends on RDS_DB_DRIVER
             RDSConnector connector = new RDSConnector(this.logger);
             Connection connection = connector.connectToRDS(credentials);
-            ResultSet resultSet = connector.getBeanList(connection, ordeCodigo);
 
             // depends on BUCKET_NAME
             AmazonS3Consumer s3Client = new AmazonS3Consumer(this.logger);
             InputStream logo = null;
             InputStream template = null;
 
-            switch (ordeCodigo) {
-                case "1":
+            switch (tipoReporte) {
+                case "comprobante":
                     logo = s3Client.retrieveObjectFromS3("logos/logo-banco.png");
                     template = s3Client.retrieveObjectFromS3("templates/comprobante.jasper");
                     break;
-                case "2":
+                case "formulario1":
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
                     template = s3Client.retrieveObjectFromS3("templates/formulario-uno.jasper");
                     break;
-                case "3":
+                case "formulario2":
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
                     template = s3Client.retrieveObjectFromS3("templates/formulario-dos.jasper");
                     break;
-                case "4":
+                case "form3":
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
                     template = s3Client.retrieveObjectFromS3("templates/formulario-tres.jasper");
                     break;
             }
 
             ReportGenerator reportGenerator = new ReportGenerator(this.logger);
-            String encodedReport = reportGenerator.generateBase64EncodedReport(logo, template, resultSet);
+            reportGenerator.setParameter("COMP_CODIGO", codigoReporte);
+            reportGenerator.generateReport(logo, template, connection);
+            String encodedReport = reportGenerator.generateBase64EncodedReport();
 
             s3Client.putObjectBucket("/tmp/export.pdf");
             
