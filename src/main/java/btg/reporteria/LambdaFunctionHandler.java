@@ -50,19 +50,19 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
             switch (ordeCodigo) {
                 case "1":
                     logo = s3Client.retrieveObjectFromS3("logos/logo-banco.png");
-                    template = s3Client.retrieveObjectFromS3("templates/comprobante.jrxml");
+                    template = s3Client.retrieveObjectFromS3("templates/comprobante.jasper");
                     break;
                 case "2":
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
-                    template = s3Client.retrieveObjectFromS3("templates/formulario-uno.jrxml");
+                    template = s3Client.retrieveObjectFromS3("templates/formulario-uno.jasper");
                     break;
                 case "3":
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
-                    template = s3Client.retrieveObjectFromS3("templates/formulario-dos.jrxml");
+                    template = s3Client.retrieveObjectFromS3("templates/formulario-dos.jasper");
                     break;
                 case "4":
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
-                    template = s3Client.retrieveObjectFromS3("templates/formulario-tres.jrxml");
+                    template = s3Client.retrieveObjectFromS3("templates/formulario-tres.jasper");
                     break;
             }
 

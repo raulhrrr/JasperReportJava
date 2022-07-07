@@ -28,6 +28,7 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 public class ReportGenerator {
@@ -59,9 +60,10 @@ public class ReportGenerator {
 
     public void generateReport(InputStream logo, InputStream template, OutputStream outputStream, ResultSet resultSet) throws JRException, SQLException {
 
-        JasperDesign jasperDesign = JRXmlLoader.load(template);
+        // JasperDesign jasperDesign = JRXmlLoader.load(template);
 
-        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
+        JasperReport jasperReport = (JasperReport) JRLoader.loadObject(template);
+                // JasperCompileManager.compileReport(jasperDesign);
 
         JRParameter[] templateParameters = jasperReport.getParameters();
         
