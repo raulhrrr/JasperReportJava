@@ -11,5 +11,5 @@ target
 *.war
 *.ear
 
-# Serverless directories
+# JasperLambda directories
 .serverless

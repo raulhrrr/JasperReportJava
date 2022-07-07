@@ -1,0 +1,11 @@
+Type: AWS::RDS::DBSubnetGroup
+Properties:
+  DBSubnetGroupDescription: "RDS Subnet Group"
+  DBSubnetGroupName: JasperLambdaSubnetGroup
+  SubnetIds:
+    - Ref: JasperLambdaPublicSubnet
+    - Ref: JasperLambdaPrivateSubnet
+  Tags: 
+    - 
+      Key: "Name"
+      Value: "JasperLambdaSubnetGroup"

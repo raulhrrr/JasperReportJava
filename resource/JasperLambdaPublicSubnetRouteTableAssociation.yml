@@ -1,6 +1,6 @@
 Type: AWS::EC2::SubnetRouteTableAssociation
 Properties:
   RouteTableId:
-    Ref: RouteTablePublic
+    Ref: JasperLambdaPublicRouteTable
   SubnetId:
-    Ref: ServerlessSubnetB
+    Ref: JasperLambdaPublicSubnet

@@ -1,0 +1,15 @@
+DependsOn: JasperLambdaVPC
+Type: AWS::EC2::SecurityGroup
+Properties:
+  GroupDescription: SecurityGroup for JasperLambda Functions
+  GroupName: JasperLambdaSecurityGroup
+  VpcId:
+    Ref: JasperLambdaVPC
+  SecurityGroupEgress:
+    - IpProtocol: "-1"
+      FromPort: "-1"
+      ToPort: "-1"
+      CidrIp: "0.0.0.0/0"
+  Tags:
+    - Key: "Name"
+      Value: "JasperLambdaSecurityGroup"

@@ -1,0 +1,11 @@
+DependsOn: JasperLambdaVPC
+Type: AWS::EC2::Subnet
+Properties:
+  VpcId:
+    Ref: JasperLambdaVPC
+  AvailabilityZone: ${self:provider.region}b
+  CidrBlock: ${self:custom.MYSQL.VPC_CIDR}.0.0.128/25
+  Tags: 
+    - 
+      Key: "Name"
+      Value: "JasperLambdaPrivateSubnet"

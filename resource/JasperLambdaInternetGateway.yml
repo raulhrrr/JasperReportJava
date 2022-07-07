@@ -3,4 +3,4 @@ Properties:
   Tags: 
     - 
       Key: "Name"
-      Value: "ServerlessInternetGateway"
+      Value: "JasperLambdaInternetGateway"

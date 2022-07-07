@@ -1,0 +1,10 @@
+DependsOn: JasperLambdaSecurityGroup
+Type: AWS::EC2::SecurityGroupIngress
+Properties:
+  GroupId:
+    Ref: JasperLambdaSecurityGroup
+  IpProtocol: "-1"
+  FromPort: "-1"
+  ToPort: "-1"
+  SourceSecurityGroupId:
+    Ref: JasperLambdaSecurityGroup

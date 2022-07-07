@@ -1,0 +1,5 @@
+Type: "AWS::EC2::NatGateway"
+Properties:
+  AllocationId: { "Fn::GetAtt": ["EIP", "AllocationId"] }
+  SubnetId: { "Ref": "JasperLambdaPublicSubnet" }
+  Tags: [{ "Key": "Name", "Value": "JasperLambdaNATGateway" }]

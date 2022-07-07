@@ -39,7 +39,7 @@ custom:
       Fn::GetAtt: [MySqlRDSInstance, Endpoint.Address]
     PORT:
       Fn::GetAtt: [MySqlRDSInstance, Endpoint.Port]
-    VPC_CIDR: 10
+    VPC_CIDR: 173
 
 package:
   artifact: target/btgfx-1.0.jar
@@ -57,9 +57,9 @@ functions:
       SECRET_REGION: "us-east-1"
     vpc:
       securityGroupIds:
-        - Ref: ServerlessSecurityGroup
+        - Ref: JasperLambdaSecurityGroup
       subnetIds:
-        - Ref: ServerlessSubnetA
+        - Ref: JasperLambdaPrivateSubnet
     events:
       - http:
           path: /reports
@@ -71,16 +71,20 @@ functions:
 
 resources:
   Resources:
-    ServerlessInternetGateway: ${file(./resource/ServerlessInternetGateway.yml)}
-    ServerlessVPC: ${file(./resource/ServerlessVPC.yml)}
-    ServerlessVPCGA: ${file(./resource/ServerlessVPCGA.yml)}
-    ServerlessSubnetA: ${file(./resource/ServerlessSubnetA.yml)}
-    ServerlessSubnetB: ${file(./resource/ServerlessSubnetB.yml)}
-    ServerlessSubnetGroup: ${file(./resource/ServerlessSubnetGroup.yml)}
-    ServerlessSecurityGroup: ${file(./resource/ServerlessSecurityGroup.yml)}
-    RouteTablePublic: ${file(./resource/RouteTablePublic.yml)}
-    RoutePublic: ${file(./resource/RoutePublic.yml)}
-    RouteTableAssociationSubnetA: ${file(./resource/RouteTableAssociationSubnetA.yml)}
-    RouteTableAssociationSubnetB: ${file(./resource/RouteTableAssociationSubnetB.yml)}
-
+    EIP: ${file(./resource/EIP.yml)}
+    JasperLambdaInternetGateway: ${file(./resource/JasperLambdaInternetGateway.yml)}
+    JasperLambdaInternetGatewayRoute: ${file(./resource/JasperLambdaInternetGatewayRoute.yml)}
+    JasperLambdaNATGateway: ${file(./resource/JasperLambdaNATGateway.yml)}
+    JasperLambdaNATGatewayRoute: ${file(./resource/JasperLambdaNATGatewayRoute.yml)}
+    JasperLambdaSecurityGroup: ${file(./resource/JasperLambdaSecurityGroup.yml)}
+    JasperLambdaSecurityGroupIngress: ${file(./resource/JasperLambdaSecurityGroupIngress.yml)}
+    JasperLambdaSubnetGroup: ${file(./resource/JasperLambdaSubnetGroup.yml)}
+    JasperLambdaVPC: ${file(./resource/JasperLambdaVPC.yml)}
+    JasperLambdaVPCGA: ${file(./resource/JasperLambdaVPCGA.yml)}
+    JasperLambdaPrivateRouteTable: ${file(./resource/JasperLambdaPrivateRouteTable.yml)}
+    JasperLambdaPrivateSubnet: ${file(./resource/JasperLambdaPrivateSubnet.yml)}
+    JasperLambdaPrivateSubnetRouteTableAssociation: ${file(./resource/JasperLambdaPrivateSubnetRouteTableAssociation.yml)}
+    JasperLambdaPublicRouteTable: ${file(./resource/JasperLambdaPublicRouteTable.yml)}
+    JasperLambdaPublicSubnet: ${file(./resource/JasperLambdaPublicSubnet.yml)}
+    JasperLambdaPublicSubnetRouteTableAssociation: ${file(./resource/JasperLambdaPublicSubnetRouteTableAssociation.yml)}
     MySqlRDSInstance: ${file(./resource/MySqlRDSInstance.yml)}

@@ -1,0 +1,7 @@
+Type: "AWS::EC2::Route"
+Properties:
+  RouteTableId:
+    Ref: JasperLambdaPrivateRouteTable
+  DestinationCidrBlock: "0.0.0.0/0"
+  NatGatewayId:
+    Ref: JasperLambdaNATGateway

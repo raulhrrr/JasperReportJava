@@ -1,0 +1,7 @@
+Type: AWS::EC2::VPC
+Properties:
+  CidrBlock: ${self:custom.MYSQL.VPC_CIDR}.0.0.0/24
+  Tags: 
+    - 
+      Key: "Name"
+      Value: "JasperLambdaVPC"
