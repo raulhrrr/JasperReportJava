@@ -44,8 +44,8 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 
             // depends on BUCKET_NAME
             AmazonS3Consumer s3Client = new AmazonS3Consumer(this.logger);
-            InputStream logo = null;
-            InputStream template = null;
+            InputStream logo;
+            InputStream template;
 
             switch (tipoReporte) {
                 case "comprobante":
@@ -64,6 +64,9 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
                     template = s3Client.retrieveObjectFromS3("templates/formulario-tres.jasper");
                     break;
+                default:
+                    logo = s3Client.retrieveObjectFromS3("logos/logo-banco.png");
+                    template = s3Client.retrieveObjectFromS3("templates/comprobante.jasper");
             }
 
             ReportGenerator reportGenerator = new ReportGenerator(this.logger);
