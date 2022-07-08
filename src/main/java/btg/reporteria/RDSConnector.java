@@ -16,7 +16,7 @@ public class RDSConnector {
 
     public Connection connectToRDS(DatabaseCredentials credentials) throws ClassNotFoundException, SQLException {
         try {
-            Class.forName("org.postgresql.Driver");
+            Class.forName(System.getenv("RDS_DB_DRIVER"));
         } catch (ClassNotFoundException e) {
             this.logger.log("There was an error when loading the database driver:" + e.getMessage());
             throw e;

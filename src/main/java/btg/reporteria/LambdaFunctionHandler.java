@@ -32,7 +32,8 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
 
             JSONObject queryParameters = extractQueryStringParameters(inputStream);
             String codigoReporte = (String) queryParameters.get((Object) "codigoReporte");
-            String tipoReporte = (String) queryParameters.get((Object) "tipoReporte");
+            String tipoReporte = (String) queryParameters.get((Object) "tipoReporte")
+                    != null ? (String) queryParameters.get((Object) "tipoReporte") : "";
             
             // depends on SECRET_NAME, SECRET_REGION
             DatabaseCredentials credentials = new DatabaseCredentials(this.logger);
@@ -52,11 +53,11 @@ public class LambdaFunctionHandler implements RequestStreamHandler {
                     logo = s3Client.retrieveObjectFromS3("logos/logo-banco.png");
                     template = s3Client.retrieveObjectFromS3("templates/comprobante.jasper");
                     break;
-                case "formulario1":
+                case "form1":
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
                     template = s3Client.retrieveObjectFromS3("templates/formulario-uno.jasper");
                     break;
-                case "formulario2":
+                case "form2":
                     logo = s3Client.retrieveObjectFromS3("logos/escudo-banrep.jpg");
                     template = s3Client.retrieveObjectFromS3("templates/formulario-dos.jasper");
                     break;

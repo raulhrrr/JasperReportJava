@@ -66,30 +66,30 @@ public class DatabaseCredentials {
 		GetSecretValueResult getSecretValueResponse = null;
 
 		try {
-			getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
+                    getSecretValueResponse = client.getSecretValue(getSecretValueRequest);
 		} catch (ResourceNotFoundException e) {
-			logger.log("The requested secret " + secretName + " was not found");
-			throw e;
+                    logger.log("The requested secret " + secretName + " was not found");
+                    throw e;
 		} catch (InvalidRequestException e) {  
-			logger.log("The request was invalid due to: " + e.getMessage());
-			throw e;
+                    logger.log("The request was invalid due to: " + e.getMessage());
+                    throw e;
 		} catch (InvalidParameterException e) {  
-			logger.log("The request had invalid params: " + e.getMessage());
-			throw e;
+                    logger.log("The request had invalid params: " + e.getMessage());
+                    throw e;
 		}
 		if(getSecretValueResponse == null) {  
-			logger.log("Secret response is null");
-			throw new Exception("Secret response is null");
+                    logger.log("Secret response is null");
+                    throw new Exception("Secret response is null");
 		}   
 
 		String secret = getSecretValueResponse.getSecretString(); 
 
 		if(secret != null) {
 			try {    
-				secretsJson = objectMapper.readTree(secret);  
+                            secretsJson = objectMapper.readTree(secret);  
 			} catch (IOException e) {    
-				logger.log("Exception while retrieving secret values: " + e.getMessage());
-				throw e;
+                            logger.log("Exception while retrieving secret values: " + e.getMessage());
+                            throw e;
 			}
 		} else {  
 			logger.log("The Secret String returned is null");

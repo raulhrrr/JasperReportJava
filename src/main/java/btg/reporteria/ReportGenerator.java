@@ -59,5 +59,4 @@ public class ReportGenerator {
 
         this.logger.log("File generated successfully");
     }
-  
 }
