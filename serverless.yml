@@ -1,6 +1,6 @@
 service: java-jasperreport
 
-frameworkVersion: "3.19.0"
+frameworkVersion: "3.20.0"
 
 provider:
   name: aws
@@ -30,6 +30,11 @@ provider:
             - "rds:*"
           Resource: "*"
 
+package:
+  individually: true
+  patterns:
+    - "./**"
+
 custom:
   DB_NAME: ExampleDB
   USERNAME: master
@@ -41,15 +46,14 @@ custom:
       Fn::GetAtt: [MySqlRDSInstance, Endpoint.Port]
     VPC_CIDR: 173
 
-package:
-  artifact: target/btgfx-1.0.jar
-
 functions:
   LambdaJasperReport:
     handler: btg.reporteria.LambdaFunctionHandler
     name: LambdaJasperReport
     memorySize: 512
     timeout: 60
+    package:
+      artifact: target/btgfx-1.0.jar
     environment:
       RDS_DB_DRIVER: "org.mariadb.jdbc.Driver"
       BUCKET_NAME: "jrxml-templates-jasperreport"

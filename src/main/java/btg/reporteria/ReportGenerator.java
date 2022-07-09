@@ -55,6 +55,10 @@ public class ReportGenerator {
          
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, this.parameters, connection);
 
+        if ( jasperPrint != null && !connection.isClosed() ) {
+            connection.close();
+        }
+        
         JasperExportManager.exportReportToPdfFile(jasperPrint, this.outFile);
 
         this.logger.log("File generated successfully");
